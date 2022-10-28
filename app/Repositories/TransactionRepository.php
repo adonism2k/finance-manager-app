@@ -9,7 +9,7 @@ class TransactionRepository implements TransactionInterface
 {
     public function all($search = null)
     {
-        return Transaction::search($search)->with('account')->paginate();
+        return Transaction::search($search)->paginate();
     }
 
     public function find(Transaction $transaction): Transaction

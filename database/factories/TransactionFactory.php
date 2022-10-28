@@ -26,6 +26,13 @@ class TransactionFactory extends Factory
         ];
     }
 
+    public function now()
+    {
+        return $this->state([
+            'created_at' => now(),
+        ]);
+    }
+
     public function january()
     {
         return $this->state([

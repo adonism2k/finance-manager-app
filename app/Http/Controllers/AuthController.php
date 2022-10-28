@@ -41,9 +41,8 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request): JsonResponse
     {
-        $user = $request->safe()->only(['name', 'username', 'email', 'password']);
         $user = $this->user->create(array_merge(
-            $user,
+            $request->validated(),
             ['password' => bcrypt($request->password)]
         ));
 
