@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,5 +50,34 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $e
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof NotFoundHttpException) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Not Found!',
+            ], Response::HTTP_NOT_FOUND);
+        } elseif ($e instanceof ModelNotFoundException) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Data not found',
+            ], Response::HTTP_NOT_FOUND);
+        } elseif ($e instanceof TooManyRequestsHttpException) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Too many requests. Please wait for a bit.',
+            ], Response::HTTP_TOO_MANY_REQUESTS);
+        }
+
+        return parent::render($request, $e);
     }
 }
