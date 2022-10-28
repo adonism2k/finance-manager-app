@@ -33,6 +33,7 @@ Ini merupakan aplikasi untuk mengelola keuangan pribadi. Aplikasi ini dibuat unt
     ```shell
     ./vendor/bin/sail up -d
     ./vendor/bin/sail artisan migrate:refresh --seed
+    ./vendor/bin/sail artisan test
     ```
 
 3. **Open the code and start customizing!**
